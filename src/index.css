@@ -1,0 +1,75 @@
+@import "tailwindcss";
+
+@theme {
+  --font-display: "Fraunces", "Georgia", serif;
+  --font-sans: "Inter", "Helvetica Neue", Arial, sans-serif;
+
+  --color-stlad-bg: #222324;
+  --color-stlad-bg-raised: #2b2c2e;
+  --color-stlad-bg-sunken: #1a1b1c;
+  --color-stlad-ink: #f4f2ec;
+  --color-stlad-ink-soft: #b7b5ae;
+  --color-stlad-gold: #f8da4d;
+  --color-stlad-gold-soft: #f8da4d33;
+  --color-stlad-line: #ffffff1a;
+}
+
+/* Wide-gamut gold: sRGB #F8DA4D is the safe default (dark UI chrome).
+   On displays/browsers that can render Display P3, and when the system
+   is in light appearance, swap to the richer P3 gold (#F3DB66 in P3). */
+:root {
+  --gold: #f8da4d;
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    --gold: #f3db66;
+  }
+}
+
+@supports (color: color(display-p3 1 1 1)) {
+  @media (prefers-color-scheme: light) {
+    :root {
+      --gold: color(display-p3 0.953 0.859 0.4);
+    }
+  }
+}
+
+html {
+  scroll-behavior: smooth;
+  color-scheme: dark;
+}
+
+body {
+  background-color: #222324;
+  color: #f4f2ec;
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: var(--gold);
+  color: #222324;
+}
+
+.text-gold {
+  color: var(--gold);
+}
+
+.bg-gold {
+  background-color: var(--gold);
+}
+
+.font-display {
+  font-family: var(--font-display);
+}
+
+/* Subtle grain/vignette used behind hero + section dividers */
+.stlad-grain {
+  background-image: radial-gradient(circle at 1px 1px, rgba(255, 255, 255, 0.045) 1px, transparent 0);
+  background-size: 22px 22px;
+}
+
+.stlad-fade-bottom {
+  mask-image: linear-gradient(to bottom, black 70%, transparent 100%);
+}
