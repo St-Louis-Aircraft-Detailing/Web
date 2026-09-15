@@ -11,7 +11,7 @@ export const business = {
     'Serving Spirit of St. Louis Airport (SUS), St. Louis Downtown Airport (CPS), St. Louis Lambert International (STL), and surrounding fields.',
   // PLACEHOLDER — replace with real contact details.
   phone: '(314) 555-0142',
-  email: 'hello@stlaircraftdetailing.com',
+  email: 'info@stlouisaircraftdetailing.com',
   instagram: '@stlaircraftdetailing',
 }
 
