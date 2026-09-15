@@ -3,15 +3,38 @@ import PageHero from '../components/PageHero'
 import Section from '../components/Section'
 import { Button } from '../components/Button'
 import { business, services } from '../data/content'
+import { supabase } from '../lib/supabase'
 
 export default function Contact() {
   const [submitted, setSubmitted] = useState(false)
+  const [submitting, setSubmitting] = useState(false)
+  const [error, setError] = useState<string | null>(null)
 
-  function handleSubmit(e: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault()
-    // No backend is wired up yet — this just confirms receipt in the UI.
-    // Replace with a real submit handler (email service, form API, etc.)
-    // once one is connected.
+    setError(null)
+    setSubmitting(true)
+
+    const form = new FormData(e.currentTarget)
+
+    const { error: submitError } = await supabase.from('contact_submissions').insert({
+      name: form.get('name'),
+      email: form.get('email'),
+      phone: form.get('phone'),
+      aircraft: form.get('aircraft'),
+      airport: form.get('airport'),
+      service: form.get('service'),
+      message: form.get('message'),
+    })
+
+    setSubmitting(false)
+
+    if (submitError) {
+      console.error(submitError)
+      setError("Something went wrong sending that — try again, or call/email us directly.")
+      return
+    }
+
     setSubmitted(true)
   }
 
@@ -100,8 +123,16 @@ export default function Contact() {
                     placeholder="Timing, access details, special requests…"
                   />
                 </div>
-                <Button type="submit" variant="primary" className="mt-2 justify-self-start">
-                  Send Request
+                {error && (
+                  <p className="text-sm text-red-400">{error}</p>
+                )}
+                <Button
+                  type="submit"
+                  variant="primary"
+                  className="mt-2 justify-self-start disabled:opacity-60"
+                  disabled={submitting}
+                >
+                  {submitting ? 'Sending…' : 'Send Request'}
                 </Button>
               </form>
             )}
